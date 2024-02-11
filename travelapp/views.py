@@ -1,19 +1,27 @@
-import django_filters
-from rest_framework import generics
-from .models import UserProfile, Destination
-from .filters import UserProfileFilter, DestinationFilter
-from .serializers import UserProfileSerializer, DestinationSerializer
+from rest_framework import viewsets
+from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem
+from .serializers import UserProfileSerializer, DestinationSerializer, ActivitySerializer, BookingSerializer, ItinerarySerializer, ItineraryItemSerializer
 
-
-class UserProfileList(generics.ListAPIView):
+class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_class = UserProfileFilter
 
-
-class DestinationList(generics.ListAPIView):
+class DestinationViewSet(viewsets.ModelViewSet):
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_class = DestinationFilter
+
+class ActivityViewSet(viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+
+class BookingViewSet(viewsets.ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+
+class ItineraryViewSet(viewsets.ModelViewSet):
+    queryset = Itinerary.objects.all()
+    serializer_class = ItinerarySerializer
+
+class ItineraryItemViewSet(viewsets.ModelViewSet):
+    queryset = ItineraryItem.objects.all()
+    serializer_class = ItineraryItemSerializer
