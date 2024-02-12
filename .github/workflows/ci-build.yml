@@ -7,6 +7,13 @@ on:
     branches: [ "main" ]
 
 jobs:
+  variables:
+  DOCKER_HUB_REPO: https://hub.docker.com/nixswinner
+  DOCKER_HUB_USERNAME: nixswinner
+  DOCKER_HUB_PASSWORD: tergech48574
+
+  before_script:
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
 
   build:
 
@@ -14,5 +21,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Get short commit hash
+      id: get_commit_hash
+      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag ziara-server:${{ steps.get_commit_hash.outputs.hash }}
+
