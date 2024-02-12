@@ -8,9 +8,9 @@ on:
 
 jobs:
   variables:
-  DOCKER_HUB_REPO: https://hub.docker.com/nixswinner
-  DOCKER_HUB_USERNAME: nixswinner
-  DOCKER_HUB_PASSWORD: tergech48574
+    DOCKER_HUB_REPO: https://hub.docker.com/nixswinner
+    DOCKER_HUB_USERNAME: nixswinner
+    DOCKER_HUB_PASSWORD: tergech48574
 
   before_script:
     - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
