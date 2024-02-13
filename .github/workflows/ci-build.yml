@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
 
+
 jobs:
 
   build:
@@ -14,5 +15,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Get short commit hash
+      id: get_commit_hash
+      run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
+
+    - name: Log in to Docker Hub
+      run: docker login -u nixswinner -p dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
+      
+    - name: Push Docker image
+      run: docker push nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
+
