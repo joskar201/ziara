@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 
 jobs:
@@ -26,4 +26,3 @@ jobs:
       
     - name: Push Docker image
       run: docker push nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
-
