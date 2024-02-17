@@ -8,6 +8,9 @@ on:
 
 
 jobs:
+  env:
+    GITHUB_TOKEN=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
+    DOCKER_TOKEN=dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
 
   build:
 
@@ -22,7 +25,22 @@ jobs:
       run: docker build . --file Dockerfile --tag nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
 
     - name: Log in to Docker Hub
-      run: docker login -u nixswinner -p dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
+      run: docker login -u nixswinner -p $DOCKER_TOKEN
       
     - name: Push Docker image
       run: docker push nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
+    - name: Update Manifest in Different GitHub Repo
+      $
+      run: |
+        curl -H "Authorization: token $GITHUB_TOKEN" \
+             -H "Accept: application/vnd.github.v3.raw" \
+             -o ziara-deploy-svc.yaml \
+             https://raw.githubusercontent.com/nixswinner/argocd-deployments/main/ziara/ziara-deploy-svc.yaml
+
+        sed -i 's|image: nixswinner/ziara-server:.*$|image: nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}|' ziara-deploy-svc.yaml
+
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add ziara-deploy-svc.yaml
+        git commit -m "Update image in ziara-deploy-svc.yaml to latest"
+        git push
