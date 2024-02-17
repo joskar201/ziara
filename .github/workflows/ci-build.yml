@@ -8,13 +8,14 @@ on:
 
 
 jobs:
-  env:
-    GITHUB_TOKEN: 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
-    DOCKER_TOKEN: dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
+
 
   build:
 
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: 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
+      DOCKER_TOKEN: dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
 
     steps:
     - uses: actions/checkout@v3
