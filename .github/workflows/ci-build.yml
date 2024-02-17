@@ -29,8 +29,7 @@ jobs:
       
     - name: Push Docker image
       run: docker push nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
-    - name: Update Manifest in Different GitHub Repo
-      $
+    - name: Update Deployment Manifest
       run: |
         curl -H "Authorization: token $GITHUB_TOKEN" \
              -H "Accept: application/vnd.github.v3.raw" \
