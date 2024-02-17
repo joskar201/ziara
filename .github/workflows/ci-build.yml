@@ -13,6 +13,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    # -- move this to secrets---NOTE!!!
     env:
       GITHUB_TOKEN: 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
       DOCKER_TOKEN: dckr_pat_fSO3010DSsk47dvmK5VTtxP8ZSM
@@ -23,29 +24,35 @@ jobs:
     - name: Get short commit hash
       id: get_commit_hash
       run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+
+      #build docker image
+      
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
 
     - name: Log in to Docker Hub
       run: docker login -u nixswinner -p ${{ env.DOCKER_TOKEN }}
       
+      # push image to registry
     - name: Push Docker image
       run: docker push nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}
-      
-    - name: Checkout Deployment repo
+
+    # get the deployment repo
+    - name: Checkout Deployment Repo
       uses: actions/checkout@v2
       with:
         repository: ${{ env.DEPLOYMENT_REPO }}
         token: ${{ env.GITHUB_TOKEN }}
 
-    - name: Make Image Update Deployment file
+    #update the latest image tag on ziara deployment
+    - name: Update Image on Ziara Deployment File
       run: |
-        git config user.name "ZiaraSystem Deployment Bot"
+        git config user.name "Deployment Bot"
         git config user.email "bot@nixswinner.com"
         
         sed -i 's|image: nixswinner/ziara-server:[^ ]*|image: nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}|' ziara/ziara-deploy-svc.yaml
 
         git add .
-        git commit -m "Update image nixswinner/ziara-server:${{ steps.get_commit_hash.outputs.hash }}"
+        git commit -m "Update image ziara-server:${{ steps.get_commit_hash.outputs.hash }}"
         git push
 
