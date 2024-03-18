@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
+from django.conf import settings
 
 
 class UserProfile(models.Model):
     # Link to Django's built-in user model
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     # Additional fields
     user_type = models.CharField(max_length=30, choices=[
@@ -107,8 +108,7 @@ class ItineraryItem(models.Model):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.description}"
 
 
-
-# class CustomUser(AbstractUser):
-#     # Add additional fields here
-#     travel_preferences = models.TextField()
-#     booking_history = models.TextField()
+class CustomUser(AbstractUser):
+    # Add additional fields here
+    travel_preferences = models.TextField()
+    booking_history = models.TextField()

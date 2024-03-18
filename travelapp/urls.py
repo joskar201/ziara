@@ -1,7 +1,7 @@
 from django.urls import path, include
 from . import views
 from rest_framework.routers import DefaultRouter
-from .views import DestinationViewSet, UserProfileViewSet, ActivityViewSet, BookingViewSet, ItineraryViewSet, ItineraryItemViewSet
+from .views import DestinationViewSet, UserProfileViewSet, ActivityViewSet, BookingViewSet, ItineraryViewSet, ItineraryItemViewSet, UserRegistrationView
 
 
 router = DefaultRouter()
@@ -14,4 +14,5 @@ router.register(r'itineraryitems', ItineraryItemViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('register/', UserRegistrationView.as_view(), name='user-registration'),
 ]
