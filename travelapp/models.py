@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
 
 
@@ -108,7 +108,7 @@ class ItineraryItem(models.Model):
 
 
 
-class CustomUser(AbstractUser):
-    # Add additional fields here
-    travel_preferences = models.TextField()
-    booking_history = models.TextField()
+# class CustomUser(AbstractUser):
+#     # Add additional fields here
+#     travel_preferences = models.TextField()
+#     booking_history = models.TextField()
