@@ -59,6 +59,9 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',  # Require authentication for all views
     # ),
 
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 
     'DEFAULT_PERMISSION_CLASSES': [],
 
