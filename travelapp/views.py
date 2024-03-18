@@ -1,6 +1,8 @@
 from rest_framework import viewsets
 from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem
 from .serializers import UserProfileSerializer, DestinationSerializer, ActivitySerializer, BookingSerializer, ItinerarySerializer, ItineraryItemSerializer
+from rest_framework.permissions import IsAuthenticated
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
