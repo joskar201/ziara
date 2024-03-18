@@ -105,3 +105,10 @@ class ItineraryItem(models.Model):
 
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.description}"
+
+
+
+class CustomUser(AbstractUser):
+    # Add additional fields here
+    travel_preferences = models.TextField()
+    booking_history = models.TextField()
