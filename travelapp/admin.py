@@ -53,17 +53,18 @@ class VisaRequirementAdmin(admin.ModelAdmin):
     search_fields = ('destination__name',)
     list_filter = ('destination',)
 
+class ChecklistItemInline(admin.TabularInline):
+    model = ChecklistItem
+    extra = 1
+
 class ChecklistAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'created_at')
+    list_filter = ('created_at', 'user')
     search_fields = ('title', 'user__username')
-    list_filter = ('created_at',)
+    inlines = [ChecklistItemInline]
 
-class ChecklistItemAdmin(admin.ModelAdmin):
-    list_display = ('checklist', 'item_text', 'status')
-    search_fields = ('checklist__title', 'item_text')
-    list_filter = ('status',)
+admin.site.register(Checklist, ChecklistAdmin)
+admin.site.register(ChecklistItem)
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(VisaRequirement, VisaRequirementAdmin)
-admin.site.register(Checklist, ChecklistAdmin)
-admin.site.register(ChecklistItem, ChecklistItemAdmin)
