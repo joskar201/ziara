@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem
+from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -48,4 +48,19 @@ class ItinerarySerializer(serializers.ModelSerializer):
 class ItineraryItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItineraryItem
+        fields = '__all__'
+
+class VisaRequirementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VisaRequirement
+        fields = '__all__'
+
+class ChecklistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Checklist
+        fields = '__all__'
+
+class ChecklistItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ChecklistItem
         fields = '__all__'

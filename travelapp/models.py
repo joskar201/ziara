@@ -112,3 +112,29 @@ class CustomUser(AbstractUser):
     # Add additional fields here
     travel_preferences = models.TextField()
     booking_history = models.TextField()
+
+
+class VisaRequirement(models.Model):
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='visa_requirements')
+    document_requirements = models.TextField()
+    processing_time = models.CharField(max_length=100)
+    fees = models.DecimalField(max_digits=10, decimal_places=2)
+    additional_notes = models.TextField(blank=True, null=True)
+
+
+class Checklist(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='checklists')
+    title = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+
+class ChecklistItem(models.Model):
+    STATUS_CHOICES = [
+        ('not_started', 'Not Started'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+    ]
+    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE, related_name='items')
+    item_text = models.CharField(max_length=255)
+    status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='not_started')

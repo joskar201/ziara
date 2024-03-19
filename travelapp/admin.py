@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem
+from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, CustomUser, VisaRequirement, Checklist, ChecklistItem
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'user_type', 'phone_number', 'bio')
@@ -43,3 +43,27 @@ class ItineraryAdmin(admin.ModelAdmin):
 
 admin.site.register(Itinerary, ItineraryAdmin)
 admin.site.register(ItineraryItem)
+
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name')
+    search_fields = ('username', 'email')
+
+class VisaRequirementAdmin(admin.ModelAdmin):
+    list_display = ('destination', 'processing_time', 'fees')
+    search_fields = ('destination__name',)
+    list_filter = ('destination',)
+
+class ChecklistAdmin(admin.ModelAdmin):
+    list_display = ('title', 'user', 'created_at')
+    search_fields = ('title', 'user__username')
+    list_filter = ('created_at',)
+
+class ChecklistItemAdmin(admin.ModelAdmin):
+    list_display = ('checklist', 'item_text', 'status')
+    search_fields = ('checklist__title', 'item_text')
+    list_filter = ('status',)
+
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(VisaRequirement, VisaRequirementAdmin)
+admin.site.register(Checklist, ChecklistAdmin)
+admin.site.register(ChecklistItem, ChecklistItemAdmin)
