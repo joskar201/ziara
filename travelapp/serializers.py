@@ -1,5 +1,9 @@
 from rest_framework import serializers
-from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem
+from .models import (
+    UserProfile, Destination, Activity, Booking, 
+    Itinerary, ItineraryItem, VisaRequirement, 
+    Checklist, ChecklistItem, Transfer
+    )
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -65,4 +69,9 @@ class ChecklistSerializer(serializers.ModelSerializer):
 class ChecklistItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChecklistItem
+        fields = '__all__'
+
+class TransferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transfer
         fields = '__all__'

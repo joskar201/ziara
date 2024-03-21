@@ -151,3 +151,15 @@ class ChecklistItem(models.Model):
     checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE, related_name='items')
     item_text = models.CharField(max_length=255)
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='not_started')
+
+class Transfer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='transfers')
+    pickup_location = models.CharField(max_length=255)
+    dropoff_location = models.CharField(max_length=255)
+    pickup_time = models.DateTimeField()
+    passengers = models.PositiveIntegerField()
+    vehicle_type = models.CharField(max_length=50, choices=(('Standard', 'Standard'), ('Luxury', 'Luxury')))
+    special_requests = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Transfer for {self.user.username} from {self.pickup_location} to {self.dropoff_location} on {self.pickup_time.strftime('%Y-%m-%d %H:%M')}"

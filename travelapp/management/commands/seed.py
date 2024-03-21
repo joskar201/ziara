@@ -1,7 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from faker import Faker
-from travelapp.models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem,CustomUser
+from travelapp.models import (
+    UserProfile, Destination, Activity, Booking, 
+    Itinerary, ItineraryItem, 
+    VisaRequirement, Checklist, ChecklistItem,CustomUser
+    )
 
 User = get_user_model()
 faker = Faker()

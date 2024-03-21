@@ -1,7 +1,15 @@
 from rest_framework import viewsets, status, views
 from rest_framework.viewsets import ReadOnlyModelViewSet
-from .models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem
-from .serializers import UserProfileSerializer, DestinationSerializer, ActivitySerializer, BookingSerializer, ItinerarySerializer, ItineraryItemSerializer, UserRegistrationSerializer, VisaRequirementSerializer, ChecklistSerializer, ChecklistItemSerializer
+from .models import (
+    UserProfile, Destination, Activity, Booking, Itinerary, 
+    ItineraryItem, VisaRequirement, Checklist, ChecklistItem,Transfer
+    )
+from .serializers import (
+    UserProfileSerializer, DestinationSerializer, ActivitySerializer, 
+    BookingSerializer, ItinerarySerializer, ItineraryItemSerializer, 
+    UserRegistrationSerializer, VisaRequirementSerializer, 
+    ChecklistSerializer, ChecklistItemSerializer, TransferSerializer
+    )
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema
@@ -62,3 +70,8 @@ class ChecklistItemViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = ChecklistItem.objects.all()
     serializer_class = ChecklistItemSerializer
+
+class TransferViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Transfer.objects.all()
+    serializer_class = TransferSerializer
