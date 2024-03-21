@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from .models import UserProfile, Destination, Activity
+from .models import UserProfile, Destination, Activity, Booking
+
 
 
 class UserRegistrationTest(APITestCase):
@@ -81,3 +82,32 @@ class ActivityViewSetTest(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)  # Assuming only one activity in setUp
+
+class BookingViewSetTest(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', email='testuser@example.com', password='testpassword')
+        self.client.force_authenticate(user=self.user)
+        self.user_profile = UserProfile.objects.create(user=self.user, bio="Test Bio")
+        self.destination = Destination.objects.create(name="Test Destination", description="Description", location="Test Location", destination_type="Adventure")
+        self.booking = Booking.objects.create(user_profile=self.user_profile, booking_type='hotel', booking_date='2023-01-01', start_date='2023-01-05', end_date='2023-01-10', details='Booking Details', price=200.00, is_confirmed=True)
+
+    def test_create_booking(self):
+        url = reverse('booking-list')
+        data = {
+            "user_profile": self.user_profile.id,
+            "booking_type": "activity",
+            "booking_date": "2023-01-02",
+            "start_date": "2023-01-06",
+            "end_date": "2023-01-11",
+            "details": "New Booking Details",
+            "price": 150.00,
+            "is_confirmed": False
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_list_bookings(self):
+        url = reverse('booking-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)  # Assuming setUp created only one booking
