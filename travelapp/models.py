@@ -154,6 +154,7 @@ class ChecklistItem(models.Model):
 
 class Transfer(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='transfers')
+    booking = models.ForeignKey('Booking', on_delete=models.SET_NULL, null=True, blank=True, related_name='transfers')
     pickup_location = models.CharField(max_length=255)
     dropoff_location = models.CharField(max_length=255)
     pickup_time = models.DateTimeField()
@@ -162,4 +163,4 @@ class Transfer(models.Model):
     special_requests = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"Transfer for {self.user.username} from {self.pickup_location} to {self.dropoff_location} on {self.pickup_time.strftime('%Y-%m-%d %H:%M')}"
+        return f"Transfer for {self.user.username} from {self.pickup_location} to {self.dropoff_location} on {self.pickup_time.strftime('%Y-%m-%d %H:%M')}" 
