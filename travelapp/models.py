@@ -63,6 +63,9 @@ class Activity(models.Model):
     ])
     duration = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    price_per_adult = models.DecimalField(max_digits=6, decimal_places=2)
+    price_per_child = models.DecimalField(max_digits=6, decimal_places=2)
+    location = models.CharField(max_length=255, blank=True) 
     image = models.ImageField(upload_to='activity_images/', null=True, blank=True)
 
     def __str__(self):
