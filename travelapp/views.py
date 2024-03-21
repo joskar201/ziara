@@ -27,12 +27,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
 
 class DestinationViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
 
 class ActivityViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
 
@@ -56,9 +54,11 @@ class VisaRequirementViewSet(ReadOnlyModelViewSet):
     serializer_class = VisaRequirementSerializer
 
 class ChecklistViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
 
 class ChecklistItemViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = ChecklistItem.objects.all()
     serializer_class = ChecklistItemSerializer
