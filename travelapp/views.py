@@ -41,7 +41,7 @@ class BookingViewSet(viewsets.ModelViewSet):
 
 class ItineraryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Itinerary.objects.all()
+    queryset = Itinerary.objects.prefetch_related('items')
     serializer_class = ItinerarySerializer
 
 class ItineraryItemViewSet(viewsets.ModelViewSet):
