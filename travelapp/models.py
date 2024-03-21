@@ -24,6 +24,13 @@ class UserProfile(models.Model):
 
 
 class Destination(models.Model):
+    AMENITIES_CHOICES = [
+        ('television', 'Television'),
+        ('wifi', 'WiFi'),
+        ('free_parking', 'Free Parking'),
+        # Add more amenities as needed
+    ]
+    
     name = models.CharField(max_length=255)
     description = models.TextField()
     location = models.CharField(max_length=255)
@@ -36,6 +43,8 @@ class Destination(models.Model):
     ])
     popular_activities = models.TextField()
     image = models.ImageField(upload_to='destination_images/', null=True, blank=True)
+    amenities = models.JSONField(default=list)  # Stores list of amenities
+    price_per_night = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
         return self.name
@@ -127,7 +136,7 @@ class Checklist(models.Model):
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
 
 class ChecklistItem(models.Model):
     STATUS_CHOICES = [

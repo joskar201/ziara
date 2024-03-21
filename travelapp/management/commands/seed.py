@@ -36,20 +36,23 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f'Successfully added {users} fake users and related data.'))
         
         
-        # Assume destination_types is a list of possible destination_type choices from your model
         destination_types = ['adventure', 'family', 'business', 'cultural', 'leisure']
+        amenities_choices = ['television', 'wifi', 'free_parking']  # Add more as per your model
 
-        for _ in range(10):  # Adjust the range for the number of Destinations you want
+        for _ in range(10):  # Adjust for the number of Destinations you want
             Destination.objects.create(
                 name=faker.city(),
                 description=faker.text(max_nb_chars=200),
                 location=f"{faker.city()}, {faker.country()}",
-                destination_type=faker.random_choices(destination_types),
+                destination_type=faker.random_element(elements=destination_types),
                 popular_activities=faker.sentence(nb_words=6),
-                # Assuming you're okay with a placeholder image or have a mechanism to handle image fields
+                amenities=faker.random_elements(elements=amenities_choices, unique=True, length=faker.random_int(min=1, max=len(amenities_choices))),
+                price_per_night=faker.pydecimal(left_digits=4, right_digits=2, positive=True),
+                # Handle 'image' as per your requirements
             )
 
         self.stdout.write(self.style.SUCCESS('Successfully added fake destinations.'))
+
 
 
         activity_types = ['adventure', 'cultural', 'leisure', 'sport', 'educational']
