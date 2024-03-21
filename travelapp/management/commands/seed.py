@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from faker import Faker
-from models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem,CustomUser
+from travelapp.models import UserProfile, Destination, Activity, Booking, Itinerary, ItineraryItem, VisaRequirement, Checklist, ChecklistItem,CustomUser
 
 User = get_user_model()
 faker = Faker()
@@ -17,10 +17,11 @@ class Command(BaseCommand):
 
         for _ in range(users):
             user = User.objects.create_user(username=faker.user_name(), email=faker.email(), password="password")
+            user_type_choices = UserProfile._meta.get_field('user_type').choices
 
             UserProfile.objects.create(
                 user=user,
-                user_type=faker.random_choice(UserProfile.USER_TYPE_CHOICES)[0],
+                user_type=faker.random_element(elements=[choice[0] for choice in user_type_choices]),
                 phone_number=faker.phone_number(),
                 bio=faker.text(),
                 profile_pic=faker.image_url()
@@ -43,7 +44,7 @@ class Command(BaseCommand):
                 name=faker.city(),
                 description=faker.text(max_nb_chars=200),
                 location=f"{faker.city()}, {faker.country()}",
-                destination_type=faker.random_choice(destination_types),
+                destination_type=faker.random_choices(destination_types),
                 popular_activities=faker.sentence(nb_words=6),
                 # Assuming you're okay with a placeholder image or have a mechanism to handle image fields
             )
@@ -57,9 +58,9 @@ class Command(BaseCommand):
             for _ in range(5):  # Adjust for the desired number of activities per destination
                 Activity.objects.create(
                     destination=destination,
-                    name=f'{faker.word().capitalize()} {faker.random_choice(activity_types).capitalize()}',
+                    name=f'{faker.word().capitalize()} {faker.random_element(elements=activity_types).capitalize()}',
                     description=faker.paragraph(nb_sentences=3),
-                    activity_type=faker.random_choice(activity_types),
+                    activity_type=faker.random_choices(activity_types),
                     duration=f"{faker.random_int(min=1, max=5)} hours",
                     price=faker.pydecimal(left_digits=2, right_digits=2, positive=True),
                     # Handle the image field as per your requirements

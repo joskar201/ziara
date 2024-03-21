@@ -8,22 +8,16 @@ ENV PYTHONUNBUFFERED 1
 # Set work directory
 WORKDIR /app
 
-
 # Copy project
 COPY . /app/
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Expose port 8000 to the outside world
-EXPOSE 8000
-
-# Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Make entrypoint.sh executable
+RUN chmod +x /app/entrypoint.sh
 
 # Expose port 8000 to the outside world
 EXPOSE 8000
 
-# Run app.py when the container launches
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Run entrypoint.sh when the container launches
+ENTRYPOINT ["/app/entrypoint.sh"]
