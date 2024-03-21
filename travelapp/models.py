@@ -108,6 +108,7 @@ class ItineraryItem(models.Model):
     date = models.DateTimeField()
     description = models.TextField()
     location = models.CharField(max_length=255, blank=True, null=True)
+    booking = models.ForeignKey('Booking', on_delete=models.SET_NULL, null=True, blank=True, related_name='itinerary_items')
     type = models.CharField(max_length=50, choices=[
         ('flight', 'Flight'),
         ('accommodation', 'Accommodation'),
