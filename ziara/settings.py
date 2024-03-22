@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,65 +39,45 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
 
     'drf_spectacular',
     'corsheaders',
     
     'rest_framework',
+    'dj_rest_auth',
+    'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
+
     'travelapp',
 
 ]
 
 
-# REST framework settings
 REST_FRAMEWORK = {
-    # # Authentication
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework.authentication.TokenAuthentication',  # Use token-based authentication
-    # ),
-
-    # # Permissions
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',  # Require authentication for all views
-    # ),
-
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-
-    'DEFAULT_PERMISSION_CLASSES': [],
-
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
-
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
-    # Pagination
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,  # Set the default page size
-
-    # Throttling (Rate Limiting)
+    'PAGE_SIZE': 10,
     'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.UserRateThrottle',  # Rate limiting per user
+        'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '100/hour',  # Adjust the rate limit as needed
+        'user': '100/hour',
     },
-
-    # # Exception handling
-    # 'EXCEPTION_HANDLER': 'myapp.utils.custom_exception_handler',
-
-    # Customizing serializers
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',  # Use JSON as the default renderer
-    ),
-
-    # # Authentication and Authorization
-    # 'UNAUTHENTICATED_USER': None,  # Return 401 Unauthorized for unauthenticated users
-
-    # Filtering
     'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend',  # Enable filtering with django-filter
+        'django_filters.rest_framework.DjangoFilterBackend',
     ],
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
 }
 
 MIDDLEWARE = [
@@ -107,6 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'ziara.urls'
@@ -189,3 +172,16 @@ CORS_ALLOW_ALL_ORIGINS = True
 # ]
 
 AUTH_USER_MODEL = 'travelapp.CustomUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+REST_USE_JWT = True
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+REST_AUTH_TOKEN_MODEL = None
+
+SITE_ID = 1

@@ -32,7 +32,7 @@ class UserRegistrationView(views.APIView):
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = UserProfile.objects.all()
+    queryset = UserProfile.objects.all()#
     serializer_class = UserProfileSerializer
 
 class DestinationViewSet(viewsets.ModelViewSet):
