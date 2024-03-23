@@ -43,11 +43,7 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = '__all__'
-        read_only_fields = ('user',)  # Assuming 'user' is the field name in Booking model
-
-    def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
+        read_only_fields = ('user_profile',)
 
 
 class ItineraryItemSerializer(serializers.ModelSerializer):
@@ -61,6 +57,7 @@ class ItinerarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
         fields = '__all__'
+        read_only_fields = ('user_profile',)
 
 class VisaRequirementSerializer(serializers.ModelSerializer):
     class Meta:
@@ -71,6 +68,7 @@ class ChecklistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Checklist
         fields = '__all__'
+        read_only_fields = ('user_profile',)
 
 class ChecklistItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,3 +79,4 @@ class TransferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transfer
         fields = '__all__'
+        read_only_fields = ('user_profile',)

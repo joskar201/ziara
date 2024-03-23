@@ -47,19 +47,32 @@ class BookingViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = BookingSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user.userprofile)
+
     def get_queryset(self):
         # Return bookings only for the authenticated user
-        return Booking.objects.filter(user=self.request.user)
+        return Booking.objects.filter(user_profile=self.request.user.userprofile)
 
 class ItineraryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Itinerary.objects.prefetch_related('items')
     serializer_class = ItinerarySerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user.userprofile)
+
+    def get_queryset(self):
+        return Itinerary.objects.filter(user_profile=self.request.user.userprofile)
+
 
 class ItineraryItemViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = ItineraryItem.objects.all()
     serializer_class = ItineraryItemSerializer
+
+    def get_queryset(self):
+        user_profile = self.request.user.userprofile
+        return ItineraryItem.objects.filter(itinerary__user_profile=user_profile)
+
 
 class VisaRequirementViewSet(ReadOnlyModelViewSet):
     queryset = VisaRequirement.objects.all()
@@ -67,15 +80,31 @@ class VisaRequirementViewSet(ReadOnlyModelViewSet):
 
 class ChecklistViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Checklist.objects.all()
     serializer_class = ChecklistSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user_profile=self.request.user.userprofile)
+
+    def get_queryset(self):
+        return Checklist.objects.filter(user_profile=self.request.user.userprofile)
 
 class ChecklistItemViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = ChecklistItem.objects.all()
     serializer_class = ChecklistItemSerializer
+
+    def get_queryset(self):
+        user_profile = self.request.user.userprofile
+        return ChecklistItem.objects.filter(checklist__user_profile=user_profile)
+
 
 class TransferViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Transfer.objects.all()
     serializer_class = TransferSerializer
+
+    def perform_create(self, serializer):
+        # Automatically set the user_profile to the authenticated user's profile
+        serializer.save(user_profile=self.request.user.userprofile)
+
+    def get_queryset(self):
+        # Return transfers only for the authenticated user's profile
+        return Transfer.objects.filter(user_profile=self.request.user.userprofile)

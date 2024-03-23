@@ -136,7 +136,7 @@ class VisaRequirement(models.Model):
 
 
 class Checklist(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='checklists')
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='checklists')
     title = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -153,7 +153,7 @@ class ChecklistItem(models.Model):
     status = models.CharField(max_length=12, choices=STATUS_CHOICES, default='not_started')
 
 class Transfer(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='transfers')
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='transfers')
     booking = models.ForeignKey('Booking', on_delete=models.SET_NULL, null=True, blank=True, related_name='transfers')
     pickup_location = models.CharField(max_length=255)
     dropoff_location = models.CharField(max_length=255)
