@@ -32,7 +32,7 @@ class UserRegistrationView(views.APIView):
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = UserProfile.objects.all()#
+    queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
 class DestinationViewSet(viewsets.ModelViewSet):
@@ -45,8 +45,11 @@ class ActivityViewSet(viewsets.ModelViewSet):
 
 class BookingViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = Booking.objects.all()
     serializer_class = BookingSerializer
+
+    def get_queryset(self):
+        # Return bookings only for the authenticated user
+        return Booking.objects.filter(user=self.request.user)
 
 class ItineraryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]

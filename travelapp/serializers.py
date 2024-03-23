@@ -43,6 +43,12 @@ class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = '__all__'
+        read_only_fields = ('user',)  # Assuming 'user' is the field name in Booking model
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
 
 class ItineraryItemSerializer(serializers.ModelSerializer):
     class Meta:
