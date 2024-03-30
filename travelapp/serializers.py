@@ -40,10 +40,19 @@ class ActivitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
+    activity_details = ActivitySerializer(source='activity', read_only=True)
+    accomodation_details = DestinationSerializer(source='destination', read_only=True)
+
     class Meta:
         model = Booking
         fields = '__all__'
         read_only_fields = ('user_profile',)
+
+    def __init__(self, *args, **kwargs):
+        super(BookingSerializer, self).__init__(*args, **kwargs)
+        # Dynamically add extra fields to the serializer.
+        self.fields['activity_details'] = ActivitySerializer(read_only=True, source='activity')
+        self.fields['accomodation_details'] = DestinationSerializer(read_only=True, source='destination')
 
 
 class ItineraryItemSerializer(serializers.ModelSerializer):
