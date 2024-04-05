@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-v1ayv0*+_k2e3xu2st)8wk9_+xvqb7z9bm83vhf56s1ps6^i7(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['5.189.189.26', '127.0.0.1']
+ALLOWED_HOSTS = ['5.189.189.26', '127.0.0.1', '159.89.104.249']
 
 #dkcm gynn brak xrcc
 
@@ -183,7 +183,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nanocomputinglimited@gmail.com'
 EMAIL_HOST_PASSWORD = 'dkcm gynn brak xrcc'
 
-#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 REST_USE_JWT = True
 
