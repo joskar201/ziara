@@ -183,8 +183,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nanocomputinglimited@gmail.com'
 EMAIL_HOST_PASSWORD = 'dkcm gynn brak xrcc'
 
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
 REST_USE_JWT = True
 
 SIMPLE_JWT = {
