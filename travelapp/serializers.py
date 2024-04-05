@@ -12,7 +12,7 @@ User = get_user_model()
 class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'email', 'travel_preferences', 'booking_history')
+        fields = ('id', 'username', 'password', 'email')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -20,8 +20,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
-            travel_preferences=validated_data['travel_preferences'],
-            booking_history=validated_data['booking_history']
         )
         return user
 
