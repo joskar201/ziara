@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import (
     UserProfile, Destination, Activity, Booking, 
     Itinerary, ItineraryItem, VisaRequirement, 
-    Checklist, ChecklistItem, Transfer
+    Checklist, ChecklistItem, Transfer, Amenity,
+    Accommodation
     )
 from django.contrib.auth import get_user_model
 
@@ -33,6 +34,36 @@ class DestinationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Destination
         fields = '__all__'
+
+
+class AmenitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Amenity
+        fields = '__all__'
+
+class AccommodationSerializer(serializers.ModelSerializer):
+    amenities = AmenitySerializer(many=True, required=False)
+
+    class Meta:
+        model = Accommodation
+        fields = '__all__'
+
+    def create(self, validated_data):
+        amenities_data = validated_data.pop('amenities')
+        accommodation = Accommodation.objects.create(**validated_data)
+        for amenity_data in amenities_data:
+            amenity, created = Amenity.objects.get_or_create(**amenity_data)
+            accommodation.amenities.add(amenity)
+        return accommodation
+
+    def update(self, instance, validated_data):
+        instance.amenities.clear()  # Clear existing amenities
+        amenities_data = validated_data.pop('amenities')
+        for amenity_data in amenities_data:
+            amenity, created = Amenity.objects.get_or_create(**amenity_data)
+            instance.amenities.add(amenity)
+        return super().update(instance, validated_data)
+
 
 class ActivitySerializer(serializers.ModelSerializer):
     class Meta:

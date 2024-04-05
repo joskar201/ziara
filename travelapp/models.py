@@ -22,33 +22,37 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-#this dstination should have been called acoomodation
 class Destination(models.Model):
-    AMENITIES_CHOICES = [
-        ('television', 'Television'),
-        ('wifi', 'WiFi'),
-        ('free_parking', 'Free Parking'),
-        # Add more amenities as needed
-    ]
-    
     name = models.CharField(max_length=255)
-    description = models.TextField()
-    location = models.CharField(max_length=255)
-    destination_type = models.CharField(max_length=50, choices=[
-        ('adventure', 'Adventure'),
-        ('family', 'Family'),
-        ('business', 'Business'),
-        ('cultural', 'Cultural'),
-        ('leisure', 'Leisure'),
-    ])
+    description = models.TextField(blank=True)
     popular_activities = models.TextField()
-    image = models.ImageField(upload_to='destination_images/', null=True, blank=True)
-    amenities = models.JSONField(default=list)  # Stores list of amenities
-    price_per_night = models.DecimalField(max_digits=6, decimal_places=2)
+    type = models.CharField(max_length=50, choices=[('city', 'City'), ('country', 'Country'), ('region', 'Region')])
+
+    def __str__(self):
+        return self.name
+
+
+class Amenity(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True)
 
     def __str__(self):
         return self.name
     
+
+class Accommodation(models.Model):
+    name = models.CharField(max_length=255)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='accommodations')
+    amenities = models.ManyToManyField(Amenity, related_name='accommodations', blank=True)
+    location = models.CharField(max_length=255)
+    description = models.TextField()
+    amenities = models.JSONField(default=list)
+    price_per_night = models.DecimalField(max_digits=6, decimal_places=2)
+    image = models.ImageField(upload_to='accommodation_images/', null=True, blank=True)    
+
+    def __str__(self):
+        return self.name
+
 
 class Activity(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='activities')
@@ -130,13 +134,6 @@ class ItineraryItem(models.Model):
     def __str__(self):
         return f"{self.date.strftime('%Y-%m-%d')} - {self.description}"
 
-
-class CustomUser(AbstractUser):
-    # Add additional fields here
-    travel_preferences = models.TextField()
-    booking_history = models.TextField()
-
-
 class VisaRequirement(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE, related_name='visa_requirements')
     document_requirements = models.TextField()
@@ -174,3 +171,15 @@ class Transfer(models.Model):
 
     def __str__(self):
         return f"Transfer for {self.user.username} from {self.pickup_location} to {self.dropoff_location} on {self.pickup_time.strftime('%Y-%m-%d %H:%M')}" 
+    
+class Flight(models.Model):
+    flight_number = models.CharField(max_length=255)
+    departure_airport = models.CharField(max_length=255)
+    arrival_airport = models.CharField(max_length=255)
+    departure_time = models.DateTimeField()
+    arrival_time = models.DateTimeField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    provider = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='flights')
+
+    def __str__(self):
+        return f"{self.flight_number} from {self.departure_airport} to {self.arrival_airport}"

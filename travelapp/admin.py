@@ -1,22 +1,9 @@
 from django.contrib import admin
 from .models import (
-    UserProfile, Destination, Activity, Booking, Itinerary, 
-    ItineraryItem, CustomUser, VisaRequirement, Checklist, ChecklistItem,
+    Destination, Activity, Booking, Itinerary, 
+    ItineraryItem, VisaRequirement, Checklist, ChecklistItem,
     Transfer
 )
-
-class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'user_type', 'phone_number', 'bio')
-    search_fields = ('user__username', 'user_type', 'phone_number')
-
-admin.site.register(UserProfile, UserProfileAdmin)
-
-class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location', 'destination_type')
-    search_fields = ('name', 'location', 'destination_type')
-    list_filter = ('destination_type',)
-
-admin.site.register(Destination, DestinationAdmin)
 
 class ActivityAdmin(admin.ModelAdmin):
     list_display = ('name', 'destination', 'activity_type', 'price')
@@ -44,12 +31,6 @@ class ItineraryAdmin(admin.ModelAdmin):
 
 admin.site.register(Itinerary, ItineraryAdmin)
 admin.site.register(ItineraryItem)
-
-class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name')
-    search_fields = ('username', 'email')
-
-admin.site.register(CustomUser, CustomUserAdmin)
 
 class VisaRequirementAdmin(admin.ModelAdmin):
     list_display = ('destination', 'processing_time', 'fees')

@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['5.189.189.26', '127.0.0.1']
 
+#dkcm gynn brak xrcc
+
 
 # Application definition
 
@@ -171,9 +173,17 @@ CORS_ALLOW_ALL_ORIGINS = True
 #     'http://localhost:3000',  # Add the origins that are allowed to make requests
 # ]
 
-AUTH_USER_MODEL = 'travelapp.CustomUser'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nanocomputinglimited@gmail.com'
+EMAIL_HOST_PASSWORD = 'dkcm gynn brak xrcc'
+
+#ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 REST_USE_JWT = True
 
